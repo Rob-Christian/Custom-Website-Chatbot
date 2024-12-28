@@ -8,6 +8,7 @@ from langchain.vectorstores import FAISS
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.chains import ConversationalRetrievalChain
+from langchain.prompts import ChatPromptTemplate
 import validators
 
 # Load OpenAI API key
@@ -44,11 +45,19 @@ if url:
         return_messages = True
       )
 
+      # Setup Prompt Template
+      custom_prompt = ChatPromptTemplate.from_messages([
+        {"role": "system", "content": "You are a helpful assistant with memory. You can remember details shared by user within this session."},
+        {"role": "user", "content": "{question}"},
+        {"role": "assistant", "content": "{chat_history}"}
+      ])
+
       # Combine database, LLM, and Memory
       chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
         retriever = vectordb.as_retriever(),
-        memory = memory
+        memory = memory,
+        prompt = custom_prompt
       )
 
       # Provide options after processing
