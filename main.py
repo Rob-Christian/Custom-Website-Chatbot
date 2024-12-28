@@ -25,7 +25,7 @@ if url:
     st.success("Valid URL. Processing the content from the website...")
     try:
       # Get texts from the website
-      loaders = UnstructuredURLLoader(urls = [url_input])
+      loaders = UnstructuredURLLoader(urls = [url])
       data = loaders.load()
 
       # Extract chunks from the website
