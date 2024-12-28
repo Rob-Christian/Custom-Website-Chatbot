@@ -71,9 +71,9 @@ if url:
             response = chain({"question": user_input})["answer"]
             st.write(f"Chatbot: {response}")
 
-             # Debugging: Display current memory
-             st.write("### Debug: Memory Content")
-             st.json([msg.dict() for msg in st.session_state.memory.chat_memory.messages])
+            # Debugging: Display current memory
+            st.write("### Debug: Memory Content")
+            st.json([msg.dict() for msg in st.session_state.memory.chat_memory.messages])
         elif option == "End":
           st.write("Session ended. Refresh the page to restart")
     except Exception as e:
