@@ -13,6 +13,11 @@ import validators
 # Load OpenAI API key
 os.environ["OPENAI_API_KEY"] = st.secrets["key"]
 
+if "memory" not in st.session_state:
+    st.session_state.memory = ConversationBufferWindowMemory(
+        k=5, memory_key="chat_history", return_messages=True
+    )
+
 # Streamlit user interface
 st.title("Conversational Website Chatbot")
 st.write("Enter a valid website to start processing its contents")
@@ -36,19 +41,14 @@ if url:
       embeddings = OpenAIEmbeddings()
       vectordb = FAISS.from_documents(documents = chunks, embedding = embeddings)
 
-      # Setup LLM and Memory
+      # Setup LLM
       llm = ChatOpenAI(temperature = 0.2)
-      memory = ConversationBufferWindowMemory(
-        k = 5,
-        memory_key = "chat_history",
-        return_messages = True
-      )
-
+    
       # Combine database, LLM, and Memory
       chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
         retriever = vectordb.as_retriever(),
-        memory = memory
+        memory = st.session_state.memory
       )
 
       # Provide options after processing
