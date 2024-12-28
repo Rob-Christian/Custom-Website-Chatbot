@@ -11,7 +11,7 @@ from langchain.chains import ConversationalRetrievalChain
 import validators
 
 # Load OpenAI API key
-os.environ["OPENAI_API_KEY"] = st.secrets("key")
+os.environ["OPENAI_API_KEY"] = st.secret("key")
 
 # Streamlit user interface
 st.title("Conversational Website Chatbot")
