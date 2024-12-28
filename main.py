@@ -41,14 +41,20 @@ if url:
       embeddings = OpenAIEmbeddings()
       vectordb = FAISS.from_documents(documents = chunks, embedding = embeddings)
 
-      # Setup LLM
+      # Setup LLM and custom prompt
       llm = ChatOpenAI(temperature = 0.2)
+      custom_prompt = """
+          Your name is Chatbot. You are specializing in the website story.
+          If there is any history of previous conversations, use it to answer {chat_history}
+          """
+      prompt = PromptTemplate(template = custom_prompt, input_variables = ["chat_history"])
     
       # Combine database, LLM, and Memory
       chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
         retriever = vectordb.as_retriever(),
-        memory = st.session_state.memory
+        memory = st.session_state.memory,
+        combine_docs_chain_kwargs = {"prompt": prompt}
       )
 
       # Provide options after processing
