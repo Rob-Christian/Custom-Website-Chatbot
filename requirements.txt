@@ -1,0 +1,7 @@
+openai
+langchain
+faiss-cpu
+langchain_community
+unstructured
+tiktoken
+validators
