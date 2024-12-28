@@ -37,7 +37,7 @@ if url:
       vectordb = FAISS.from_documents(documents = chunks, embedding = embeddings)
 
       # Setup LLM and Memory
-      LLM = ChatOpenAI(temperature = 0.2)
+      llm = ChatOpenAI(temperature = 0.2)
       memory = ConversationBufferWindowMemory(
         k = 5,
         memory_key = "chat_history",
