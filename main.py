@@ -62,7 +62,7 @@ if url:
       # If start chatting
       if option == "Start Chatting":
         st.write("Chatbot is ready! Start asking questions.")
-        user_input = st.text_area("Your question (type "exit" if you're done asking): ", key = "user_input")
+        user_input = st.text_area("Your question (type exit if you're done asking): ", key = "user_input")
 
         if user_input:
           if user_input.lower() == "exit":
