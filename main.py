@@ -68,7 +68,7 @@ if url:
           if user_input.lower() == "exit":
             st.write("Exiting. Refresh the page to restart")
           else:
-            response = chain({"question": user_input})["answer"]
+            response = chain({"question": user_input, "chat_history" = memory.chat_memory.messages})["answer"]
             st.write(f"Chatbot: {response}")
         elif option == "End":
           st.write("Session ended. Refresh the page to restart")
