@@ -45,10 +45,14 @@ if url:
       # Setup LLM and custom prompt
       llm = ChatOpenAI(temperature = 0.2)
       custom_prompt = """
-          Your name is Chatbot. You are specializing in the website story.
-          If there is any history of previous conversations, use it to answer {chat_history}
-          """
-      prompt = PromptTemplate(template = custom_prompt, input_variables = ["chat_history"])
+      You are Chatbot, a helpful assistant who specializes in understanding and summarizing the content of websites.
+      If there is any history of previous conversations, use it to answer the user's current query.
+        
+      Previous conversations: {chat_history}
+      User's current question: {question}
+      Answer based on the above context:
+      """
+      prompt = PromptTemplate(template = custom_prompt, input_variables = ["chat_history", "question"])
     
       # Combine database, LLM, and Memory
       chain = ConversationalRetrievalChain.from_llm(
