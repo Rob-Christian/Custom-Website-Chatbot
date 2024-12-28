@@ -1,7 +1,7 @@
 openai
 langchain
 faiss-cpu
-langchain.openai
+langchain
 langchain_community
 unstructured
 tiktoken
