@@ -49,7 +49,8 @@ if url:
             chain = ConversationalRetrievalChain.from_llm(
                 llm=llm,
                 retriever=vectordb.as_retriever(),
-                memory=st.session_state.memory
+                memory=st.session_state.memory,
+                get_chat_history=lambda h :h,
             )
 
             # Provide options after processing
