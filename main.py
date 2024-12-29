@@ -6,7 +6,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chat_models import ChatOpenAI
-from langchain_core.prompts import PromptTemplate
+from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 import validators
 
