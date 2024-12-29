@@ -18,6 +18,10 @@ os.environ["OPENAI_API_KEY"] = st.secrets["key"]
 st.title("Conversational Website Chatbot")
 st.write("Enter a valid website to start processing its contents")
 
+# Initialize memory in session state
+if "memory" not in st.session_state:
+    st.session_state.memory = ConversationBufferMemory(return_messages=True)
+
 # Get URL
 url = st.text_input("Enter a website URL: ")
 
@@ -40,17 +44,11 @@ if url:
             # Setup LLM
             llm = ChatOpenAI(temperature=0.2)
 
-            # Memory and prompt template
-            memory = ConversationBufferMemory(return_messages=True)
-            prompt = ChatPromptTemplate.from_messages([
-                MessagesPlaceholder(variable_name="messages")
-            ])
-
             # Combine database, memory, and LLM
             chain = ConversationalRetrievalChain.from_llm(
                 llm=llm,
                 retriever=vectordb.as_retriever(),
-                memory=memory
+                memory=st.session_state.memory
             )
 
             # Provide options after processing
@@ -70,19 +68,21 @@ if url:
                     if user_input.lower() == "exit":
                         st.write("Exiting. Refresh the page to restart.")
                     else:
-                        # Inject chat history into the chain
-                        messages = memory.chat_memory.messages
-                        response = chain.invoke({"messages": messages, "question": user_input})["answer"]
+                        # Use session memory for chat history
+                        response = chain.invoke({
+                            "messages": st.session_state.memory.chat_memory.messages,
+                            "question": user_input
+                        })["answer"]
 
                         st.write(f"Chatbot: {response}")
 
                         # Add new user and AI messages to memory
-                        memory.chat_memory.add_user_message(user_input)
-                        memory.chat_memory.add_ai_message(response)
+                        st.session_state.memory.chat_memory.add_user_message(user_input)
+                        st.session_state.memory.chat_memory.add_ai_message(response)
 
-                        # Debugging: Display current memory
+                        # Debugging: Display full memory content
                         st.write("### Debug: Memory Content")
-                        st.json([msg.dict() for msg in memory.chat_memory.messages])
+                        st.json([msg.dict() for msg in st.session_state.memory.chat_memory.messages])
             elif option == "End":
                 st.write("Session ended. Refresh the page to restart.")
         except Exception as e:
