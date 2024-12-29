@@ -6,7 +6,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chat_models import ChatOpenAI
-from langchain.memory import ConversationBufferMemory
+from langchain.memory import ConversationSummaryBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain.prompts import PromptTemplate
 import validators
@@ -14,11 +14,12 @@ import validators
 # Load OpenAI API key
 os.environ["OPENAI_API_KEY"] = st.secrets["key"]
 
-if "memory" not in st.session_state:
-    st.session_state.memory = ConversationBufferMemory(
-        memory_key="chat_history", return_messages=True,
-        output_key = "answer"
-    )
+def init_memory():
+    return ConversationSummaryBufferMemory(
+        llm=llm,
+        output_key='answer',
+        memory_key='chat_history',
+        return_messages=True)
 
 # Streamlit user interface
 st.title("Conversational Website Chatbot")
@@ -50,7 +51,7 @@ if url:
       chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
         retriever = vectordb.as_retriever(),
-        memory = st.session_state.memory
+        memory = init_memory()
       )
 
       # Provide options after processing
