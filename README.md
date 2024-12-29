@@ -1,8 +1,8 @@
-# Custom Website Chatbot
+# Medium Website Chatbot
 
 ## Overview
 
-The Custom Website Chatbot is a Streamlit-based application that allows users to engage in conversational queries about the content of any provided website. Powered by OpenAI's language models, it extracts, processes, and retrieves information from the website to facilitate an intelligent chatbot experience.
+The Medium Website Chatbot is a Streamlit-based application that allows users to engage in conversational queries about the content of any provided medium blogs found [here](https://medium.com/). Powered by OpenAI's language models, it extracts, processes, and retrieves information from the website to facilitate an intelligent chatbot experience.
 
 ## Features
 
@@ -13,7 +13,7 @@ The Custom Website Chatbot is a Streamlit-based application that allows users to
 
 ## How It Works
 
-1. Enter a valid website URL.
+1. Enter a valid medium website URL.
 2. The chatbot extracts and processes the content from the website.
 3. It builds a conversational retrieval model using OpenAI embeddings and FAISS vector databases.
 4. Users can then ask questions or have a conversation about the website's content.
