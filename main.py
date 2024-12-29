@@ -81,39 +81,14 @@ if url:
 
 # Chat Interface
 if st.session_state.chain:
-    # Initialize session state variables
-    if "input_cleared" not in st.session_state:
-        st.session_state.input_cleared = False
+    user_input = st.text_input("Your question (type 'exit' to end): ")
 
-    # Create an empty container for the input text
-    input_container = st.empty()
-
-    # Conditionally set the default value for the input field
-    default_value = "" if st.session_state.input_cleared else None
-
-    # Display the input field and capture the user's input
-    user_input = input_container.text_input(
-        "Your question (type 'exit' to end): ",
-        value=default_value,
-        key="user_input"
-    )
-
-    # Reset the "input_cleared" flag after rendering the cleared input
-    if st.session_state.input_cleared:
-        st.session_state.input_cleared = False
-
-    # Handle the input
     if user_input:
         if user_input.lower() == "exit":
             st.write("Session ended. Refresh the page to start over.")
         else:
             try:
-                # Get the chatbot response
                 response = st.session_state.chain({"question": user_input})
                 st.write(f"Chatbot: {response['answer']}")
-
-                # Clear the input field by setting the flag
-                st.session_state.input_cleared = True
             except Exception as e:
                 st.error(f"Error during conversation: {str(e)}")
-
