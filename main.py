@@ -49,11 +49,12 @@ if url:
                 st.session_state.vectordb = FAISS.from_documents(documents=chunks, embedding=embeddings)
 
                 # Setup LLM
-                llm = ChatOpenAI(temperature=0)
+                llm = ChatOpenAI(temperature=0.1)
 
                 # Setup prompt
                 prompt_template = """
                 You are a helpful website chatbot assistant. Use the retrieved information and your past conversation to answer the conversational questions.
+                If you don't know the answer, just answer I don't know.
                 {context}
 
                 {chat_history}
