@@ -20,7 +20,7 @@ st.write("Enter a valid website to start processing its contents")
 
 # Initialize memory in session state
 if "memory" not in st.session_state:
-    st.session_state.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+    st.session_state.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True, output_key = "answer")
 
 # Get URL
 url = st.text_input("Enter a website URL: ")
