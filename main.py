@@ -81,7 +81,9 @@ if url:
 
 # Chat Interface
 if st.session_state.chain:
-    user_input = st.text_input("Your question (type 'exit' to end): ")
+    input_container = st.empty()
+    
+    user_input = input_container.text_input("Your Question (type 'exit' to end): ", key = "user_input")
 
     if user_input:
         if user_input.lower() == "exit":
@@ -90,5 +92,7 @@ if st.session_state.chain:
             try:
                 response = st.session_state.chain({"question": user_input})
                 st.write(f"Chatbot: {response['answer']}")
+                st.session_state.user_input = ""
+                input_container.empty()
             except Exception as e:
                 st.error(f"Error during conversation: {str(e)}")
