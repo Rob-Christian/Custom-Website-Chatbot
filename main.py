@@ -54,7 +54,7 @@ if url:
             Question: {question}
             Helpful Answer:
             """
-            prompt = PrompTemplate(template = prompt_template, input_variables = ["context", "chat_history", "question"])
+            prompt = PromptTemplate(template = prompt_template, input_variables = ["context", "chat_history", "question"])
 
             # Combine LLM, memory, and prompt
             chain = ConversationalRetrievalChain.from_llm(
