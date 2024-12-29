@@ -15,10 +15,10 @@ import validators
 os.environ["OPENAI_API_KEY"] = st.secrets["key"]
 
 # Streamlit user interface
-st.title("Custom Website Chatbot")
+st.title("Medium Website Chatbot")
 st.write("""
 ### How to Use:
-1. Enter a valid website link in the input box below.
+1. Enter a valid [medium](https://medium.com/) website link in the input box below.
 2. The chatbot will process the website's contents through document retrieval powered by OpenAI LLM
 3. You can now have an open-ended conversation about the uploaded website content.
 """)
