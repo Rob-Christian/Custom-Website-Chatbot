@@ -6,7 +6,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chat_models import ChatOpenAI
-from langchain.memory import ConversationBufferWindowMemory
+from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain.prompts import PromptTemplate
 import validators
@@ -15,8 +15,8 @@ import validators
 os.environ["OPENAI_API_KEY"] = st.secrets["key"]
 
 if "memory" not in st.session_state:
-    st.session_state.memory = ConversationBufferWindowMemory(
-        k=5, memory_key="chat_history", return_messages=True,
+    st.session_state.memory = ConversationBufferMemory(
+        memory_key="chat_history", return_messages=True,
         output_key = "answer"
     )
 
