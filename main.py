@@ -6,9 +6,8 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chat_models import ChatOpenAI
-from langchain.memory import ConversationBufferMemory
-from langchain.chains import ConversationalRetrievalChain
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 import validators
 
 # Load OpenAI API key
@@ -17,10 +16,6 @@ os.environ["OPENAI_API_KEY"] = st.secrets["key"]
 # Streamlit user interface
 st.title("Conversational Website Chatbot")
 st.write("Enter a valid website to start processing its contents")
-
-# Initialize memory in session state
-if "memory" not in st.session_state:
-    st.session_state.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True, output_key = "answer")
 
 # Get URL
 url = st.text_input("Enter a website URL: ")
@@ -44,12 +39,18 @@ if url:
             # Setup LLM
             llm = ChatOpenAI(temperature=0.2)
 
-            # Combine database, memory, and LLM
-            chain = ConversationalRetrievalChain.from_llm(
-                llm=llm,
-                retriever=vectordb.as_retriever(),
-                memory=st.session_state.memory
+            # Setup prompt
+            prompt = ChatPromptTemplate.from_messages(
+                [
+                    SystemMessage(
+                        content="You are a helpful website chatbot assistant. Answer all the questions to the best of your ability."
+                    ),
+                    MessagesPlaceholder(variable_name="messages"),
+                ]
             )
+
+            # Combine prompt and model
+            chain = prompt | llm
 
             # Provide options after processing
             st.write("Content processed successfully")
@@ -68,21 +69,16 @@ if url:
                     if user_input.lower() == "exit":
                         st.write("Exiting. Refresh the page to restart.")
                     else:
-                        # Use session memory for chat history
-                        response = chain({
-                            "chat_history": st.session_state.memory.chat_memory.messages,
-                            "question": user_input
-                        })["answer"]
+                        # Use the chain's invoke method to get a response
+                        response = chain.invoke(
+                            {
+                                "messages": [
+                                    HumanMessage(content=user_input),
+                                ]
+                            }
+                        )
 
-                        st.write(f"Chatbot: {response}")
-
-                        # Add new user and AI messages to memory
-                        st.session_state.memory.chat_memory.add_user_message(user_input)
-                        st.session_state.memory.chat_memory.add_ai_message(response)
-
-                        # Debugging: Display full memory content
-                        st.write("### Debug: Memory Content")
-                        st.json([msg.dict() for msg in st.session_state.memory.chat_memory.messages])
+                        st.write(f"Chatbot: {response.content}")
             elif option == "End":
                 st.write("Session ended. Refresh the page to restart.")
         except Exception as e:
