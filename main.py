@@ -76,7 +76,7 @@ if url:
 
             # Debugging: Display current memory
             st.write("### Debug: Memory Content")
-            st.json([msg.dict() for msg in st.session_state.memory.chat_memory.messages])
+            st.json([msg.dict() for msg in init_memory().chat_memory.messages])
         elif option == "End":
           st.write("Session ended. Refresh the page to restart")
     except Exception as e:
