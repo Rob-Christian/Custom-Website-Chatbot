@@ -6,7 +6,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chat_models import ChatOpenAI
-from langchain.memory import ConversationSummaryBufferMemory
+from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain.prompts import PromptTemplate
 import validators
@@ -58,10 +58,11 @@ if url:
 
       # Setup LLM
       llm = ChatOpenAI(temperature = 0.2)
-      memory = ConversationSummaryBufferMemory(
+      memory = ConversationBufferMemory(
           llm = llm,
           memory_key = 'chat_history',
           output_key = 'answer',
+          prompt = QA_PROMPT
           return_messages = True
       )
     
