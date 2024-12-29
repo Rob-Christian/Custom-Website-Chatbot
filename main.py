@@ -42,7 +42,7 @@ if url:
       memory = ConversationSummaryBufferMemory(
           llm = llm,
           memory_key = 'chat_history',
-          output_key = 'answer'
+          output_key = 'answer',
           return_messages = True
       )
     
