@@ -62,7 +62,7 @@ if url:
           llm = llm,
           memory_key = 'chat_history',
           output_key = 'answer',
-          prompt = QA_PROMPT
+          prompt = QA_PROMPT,
           return_messages = True
       )
     
