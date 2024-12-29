@@ -9,7 +9,6 @@ from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.messages import HumanMessage, AIMessage
 import validators
 
 # Load OpenAI API key
@@ -21,7 +20,7 @@ st.write("Enter a valid website to start processing its contents")
 
 # Initialize memory in session state
 if "memory" not in st.session_state:
-    st.session_state.memory = ConversationBufferMemory(return_messages=True)
+    st.session_state.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
 # Get URL
 url = st.text_input("Enter a website URL: ")
@@ -49,8 +48,7 @@ if url:
             chain = ConversationalRetrievalChain.from_llm(
                 llm=llm,
                 retriever=vectordb.as_retriever(),
-                memory=st.session_state.memory,
-                get_chat_history=lambda h :h,
+                memory=st.session_state.memory
             )
 
             # Provide options after processing
@@ -71,8 +69,8 @@ if url:
                         st.write("Exiting. Refresh the page to restart.")
                     else:
                         # Use session memory for chat history
-                        response = chain.invoke({
-                            "messages": st.session_state.memory.chat_memory.messages,
+                        response = chain({
+                            "chat_history": st.session_state.memory.chat_memory.messages,
                             "question": user_input
                         })["answer"]
 
