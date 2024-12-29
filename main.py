@@ -14,15 +14,6 @@ import validators
 # Load OpenAI API key
 os.environ["OPENAI_API_KEY"] = st.secrets["key"]
 
-def init_memory():
-    return ConversationSummaryBufferMemory(
-        llm=llm,
-        output_key='answer',
-        memory_key='chat_history',
-        return_messages=True)
-
-memory = init_memory()
-
 # Streamlit user interface
 st.title("Conversational Website Chatbot")
 st.write("Enter a valid website to start processing its contents")
@@ -48,6 +39,12 @@ if url:
 
       # Setup LLM
       llm = ChatOpenAI(temperature = 0.2)
+      memory = ConversationSummaryBufferMemory(
+          llm = llm,
+          memory_key = 'chat_history',
+          output_key = 'answer'
+          return_messages = True
+      )
     
       # Combine database, LLM, and Memory
       chain = ConversationalRetrievalChain.from_llm(
