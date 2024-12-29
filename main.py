@@ -21,6 +21,8 @@ def init_memory():
         memory_key='chat_history',
         return_messages=True)
 
+memory = init_memory()
+
 # Streamlit user interface
 st.title("Conversational Website Chatbot")
 st.write("Enter a valid website to start processing its contents")
@@ -51,7 +53,7 @@ if url:
       chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
         retriever = vectordb.as_retriever(),
-        memory = init_memory()
+        memory = memory
       )
 
       # Provide options after processing
@@ -76,7 +78,7 @@ if url:
 
             # Debugging: Display current memory
             st.write("### Debug: Memory Content")
-            st.json([msg.dict() for msg in init_memory().chat_memory.messages])
+            st.json([msg.dict() for msg in memory.chat_memory.messages])
         elif option == "End":
           st.write("Session ended. Refresh the page to restart")
     except Exception as e:
