@@ -15,7 +15,7 @@ import validators
 os.environ["OPENAI_API_KEY"] = st.secrets["key"]
 
 # Streamlit user interface
-st.title("Conversational Website Chatbot")
+st.title("Custom Website Chatbot")
 st.write("""
 ### How to Use:
 1. Enter a valid website link in the input box below.
