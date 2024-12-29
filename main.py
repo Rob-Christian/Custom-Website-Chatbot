@@ -10,6 +10,7 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage
+import validators
 
 # Load OpenAI API key
 os.environ["OPENAI_API_KEY"] = st.secrets["key"]
