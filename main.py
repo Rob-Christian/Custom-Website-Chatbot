@@ -16,7 +16,8 @@ os.environ["OPENAI_API_KEY"] = st.secrets["key"]
 
 if "memory" not in st.session_state:
     st.session_state.memory = ConversationBufferWindowMemory(
-        k=5, memory_key="chat_history", return_messages=True
+        k=5, memory_key="chat_history", return_messages=True,
+        output_key = "answer"
     )
 
 # Streamlit user interface
