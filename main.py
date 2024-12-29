@@ -81,18 +81,32 @@ if url:
 
 # Chat Interface
 if st.session_state.chain:
+    # Create an empty container for the input text
     input_container = st.empty()
-    
-    user_input = input_container.text_input("Your Question (type 'exit' to end): ", key = "user_input")
+
+    # Initialize a placeholder for user input
+    if "temp_input" not in st.session_state:
+        st.session_state.temp_input = ""
+
+    # Display the input field and capture the user's input
+    user_input = input_container.text_input(
+        "Your question (type 'exit' to end): ", 
+        value=st.session_state.temp_input,
+        key="temp_input"
+    )
 
     if user_input:
         if user_input.lower() == "exit":
             st.write("Session ended. Refresh the page to start over.")
         else:
             try:
+                # Get the chatbot response
                 response = st.session_state.chain({"question": user_input})
                 st.write(f"Chatbot: {response['answer']}")
-                st.session_state.user_input = ""
+
+                # Clear the input field by resetting the placeholder and re-rendering
+                st.session_state.temp_input = ""
                 input_container.empty()
             except Exception as e:
                 st.error(f"Error during conversation: {str(e)}")
+
