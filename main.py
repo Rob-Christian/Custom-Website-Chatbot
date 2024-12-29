@@ -93,7 +93,7 @@ if st.session_state.chain:
 
     # Display the input field and capture the user's input
     user_input = input_container.text_input(
-        "Your question (type 'exit' to end): ", 
+        "Your question (type 'exit' to end): ",
         value=default_value,
         key="user_input"
     )
@@ -102,6 +102,7 @@ if st.session_state.chain:
     if st.session_state.input_cleared:
         st.session_state.input_cleared = False
 
+    # Handle the input
     if user_input:
         if user_input.lower() == "exit":
             st.write("Session ended. Refresh the page to start over.")
@@ -113,7 +114,6 @@ if st.session_state.chain:
 
                 # Clear the input field by setting the flag
                 st.session_state.input_cleared = True
-                input_container.empty()
             except Exception as e:
                 st.error(f"Error during conversation: {str(e)}")
 
