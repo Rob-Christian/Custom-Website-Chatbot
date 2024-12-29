@@ -16,7 +16,14 @@ os.environ["OPENAI_API_KEY"] = st.secrets["key"]
 
 # Streamlit user interface
 st.title("Conversational Website Chatbot")
-st.write("Enter a valid website to start processing its contents")
+st.write("Welcome to the Conversational Website Chatbot!")
+st.write("""
+### How to Use:
+1. Enter a valid website link in the input box below.
+2. The chatbot will process the website's contents through document retrieval powered by OpenAI LLM
+3. You can now have an open-ended conversation about the uploaded website content.
+""")
+st.write("Enter a valid website link below to start:")
 
 # Initialize session state
 if "memory" not in st.session_state:
